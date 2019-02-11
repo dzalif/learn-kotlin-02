@@ -36,5 +36,9 @@ dependencies {
     implementation 'io.reactivex:rxjava:1.2.3'
     implementation 'io.reactivex:rxandroid:1.2.1'
 
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.5.0"
+    implementation "com.squareup.retrofit2:converter-moshi:2.3.0"
+
     implementation 'com.squareup.picasso:picasso:2.5.2'
 }
