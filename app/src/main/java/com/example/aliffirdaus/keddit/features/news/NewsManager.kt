@@ -1,24 +1,27 @@
 package com.example.aliffirdaus.keddit.features.news
 
+import com.example.aliffirdaus.keddit.api.RestAPI
 import com.example.aliffirdaus.keddit.models.RedditNewsItem
 import rx.Observable
+import rx.Observable.create
 
-class NewsManager() {
-    fun getNews(): Observable<List<RedditNewsItem>> {
-        return Observable.create {
+class NewsManager(private val api: RestAPI = RestAPI()) {
+    fun getNews(limit: String = "10"): Observable<List<RedditNewsItem>> {
+        return create {
             subscriber ->
-            val news = mutableListOf<RedditNewsItem>()
-            for (i in 1..10) {
-                news.add(RedditNewsItem(
-                        "author$i",
-                        "Title $i",
-                        i, // number of comments
-                        1457207701L - i * 200, // time
-                        "http://lorempixel.com/200/200/technics/$i", // image url
-                        "url"
-                ))
+            val callResponse = api.getNews("", limit)
+            val response = callResponse.execute()
+
+            if (response.isSuccessful) {
+                val news = response.body()?.data?.children?.map {
+                    val item = it.data
+                    RedditNewsItem(item.author, item.title, item.num_comments, item.created, item.thumbnail, item.url)
+                }
+                subscriber.onNext(news)
+                subscriber.onCompleted()
+            } else {
+                subscriber.onError(Throwable(response.message()))
             }
-            subscriber.onNext(news)
         }
     }
 }
