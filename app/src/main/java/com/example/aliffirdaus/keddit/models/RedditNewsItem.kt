@@ -3,7 +3,6 @@ package com.example.aliffirdaus.keddit.models
 import com.example.aliffirdaus.keddit.commons.adapter.AdapterConstants
 import com.example.aliffirdaus.keddit.commons.adapter.ViewType
 
-
 data class RedditNewsItem(
         val author: String,
         val title: String,
@@ -14,3 +13,8 @@ data class RedditNewsItem(
         ) : ViewType {
     override fun getViewType() = AdapterConstants.NEWS
 }
+
+data class RedditNews(
+        val after: String,
+        val before: String,
+        val news: List<RedditNewsItem>)
